@@ -186,7 +186,7 @@ def GetPrinter() {
 				if (state.isPrinting && response.data.progress.completion != null)
 					{
 						//state.completion = response.data.progress.completion
-						def completionValue = Math.round(response.data.progress.completion)
+						def completionValue = Math.round(response.data.progress.completion.toDouble().trunc())
 						sendEvent(name: "completion", value: completionValue)
 					} else {
 						sendEvent(name: "completion", value: 0 )
