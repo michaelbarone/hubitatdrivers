@@ -143,7 +143,7 @@ def GetPrinter() {
 					state.isPrinting = false
 				}
 				
-				if(state.state != null && ["Offline", "Disconnected"].contains(state.state)){
+				if(state.state != null && (state.state.contains("Disconnected") || state.state.contains("Offline"))){
 					state.printerConnected = false
 					sendEvent(name: "presence", value: "not present")
 				} else {
