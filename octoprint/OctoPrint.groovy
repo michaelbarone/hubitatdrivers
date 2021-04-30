@@ -6,6 +6,7 @@ metadata {
         capability "PresenceSensor"
         
         attribute "state", "enum", ["Operational", "Printing", "Pausing", "Paused", "Cancelling", "Error", "Offline", "Disconnected"]
+        attribute "error", "string"
         attribute "stateMessage", "string"
         attribute "completion", "string"
         attribute "printTimeLeft", "string"
@@ -182,7 +183,14 @@ def GetPrinter() {
 					state.printerConnected = true
 					sendEvent(name: "presence", value: "present")
 				}				
-				
+
+				if (response.data.error != null)
+					{
+						//state.error = response.data.error
+						sendEvent(name: "error", value: response.data.error )
+					} else {
+						sendEvent(name: "error", value: "none" )
+					}	
 				if (state.isPrinting && response.data.progress.completion != null)
 					{
 						//state.completion = response.data.progress.completion
