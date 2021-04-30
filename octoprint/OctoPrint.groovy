@@ -547,6 +547,5 @@ def secondsToReadableTime( secondsToConvert ) {
     long seconds = TimeUnit.MILLISECONDS.toSeconds(millis) % TimeUnit.MINUTES.toSeconds(1);
 
     String format = String.format("%02dh:%02dm:%02ds", Math.abs(hours), Math.abs(minutes), Math.abs(seconds));
-	log.debug format
 	return format
 }
