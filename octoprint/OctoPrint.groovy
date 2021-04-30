@@ -542,10 +542,20 @@ def SendCommand(String payload, String path) {
 
 def secondsToReadableTime( secondsToConvert ) {
     long millis = secondsToConvert * 1000;
-    long hours = TimeUnit.MILLISECONDS.toHours(millis);
-    long minutes = TimeUnit.MILLISECONDS.toMinutes(millis) % TimeUnit.HOURS.toMinutes(1);
-    long seconds = TimeUnit.MILLISECONDS.toSeconds(millis) % TimeUnit.MINUTES.toSeconds(1);
+    long days = Math.abs(TimeUnit.MILLISECONDS.toDays(millis));
+    long hours = Math.abs(TimeUnit.MILLISECONDS.toHours(millis) % TimeUnit.DAYS.toHours(1));
+    long minutes = Math.abs(TimeUnit.MILLISECONDS.toMinutes(millis) % TimeUnit.HOURS.toMinutes(1));
+    long seconds = Math.abs(TimeUnit.MILLISECONDS.toSeconds(millis) % TimeUnit.MINUTES.toSeconds(1));	
 
-    String format = String.format("%02dh:%02dm:%02ds", Math.abs(hours), Math.abs(minutes), Math.abs(seconds));
-	return format
+	String readableTime = ""
+	
+	if(days>0){
+		readableTime = readableTime + days +"d:"
+	}
+	if(hours>0){
+		readableTime = readableTime + hours +"h:"
+	}
+	readableTime = readableTime + minutes +"m:" + seconds +"s"
+
+	return readableTime
 }
