@@ -1,3 +1,5 @@
+import java.util.concurrent.TimeUnit
+
 metadata {
     definition (name: "OctoPrint", namespace: "OctoPrint", author: "MC", importUrl: "https://raw.githubusercontent.com/mikec85/hubitatdrivers/master/octoprint/OctoPrint.groovy") {
         capability "Actuator"
@@ -10,8 +12,11 @@ metadata {
         attribute "stateMessage", "string"
         attribute "completion", "string"
         attribute "printTimeLeft", "string"
+        attribute "printTimeLeftSeconds", "string"
         attribute "printTime", "string"
+        attribute "printTimeSeconds", "string"
         attribute "estimatedPrintTime", "string"
+        attribute "estimatedPrintTimeSeconds", "string"
         attribute "name", "string"
         attribute "user", "string"
 		attribute "lastPrinterCheck", "string"
@@ -202,24 +207,30 @@ def GetPrinter() {
 				if (state.isPrinting && response.data.progress.printTimeLeft != null)
 					{
 						//state.printTimeLeft = response.data.progress.printTimeLeft/60
-						sendEvent(name: "printTimeLeft", value: response.data.progress.printTimeLeft/60 )
+						sendEvent(name: "printTimeLeft", value: secondsToReadableTime(response.data.progress.printTimeLeft) )
+						sendEvent(name: "printTimeLeftSeconds", value: response.data.progress.printTimeLeft )
 					} else {
 						sendEvent(name: "printTimeLeft", value: 0 )
+						sendEvent(name: "printTimeLeftSeconds", value: 0 )
 					}
 				if (state.isPrinting && response.data.progress.printTime != null)
 					{
 						//state.printTime = response.data.progress.printTime/60
-						sendEvent(name: "printTime", value: response.data.progress.printTime/60 )
+						sendEvent(name: "printTime", value: secondsToReadableTime(response.data.progress.printTime) )
+						sendEvent(name: "printTimeSeconds", value: response.data.progress.printTime )
 					} else {
 						sendEvent(name: "printTime", value: 0 )
+						sendEvent(name: "printTimeSeconds", value: 0 )
 					}
 				
 				if (state.isPrinting && response.data.job.estimatedPrintTime != null)
 					{
 						//state.estimatedPrintTime = response.data.job.estimatedPrintTime/60
-						sendEvent(name: "estimatedPrintTime", value: response.data.job.estimatedPrintTime/60 )
+						sendEvent(name: "estimatedPrintTime", value: secondsToReadableTime(response.data.job.estimatedPrintTime) )
+						sendEvent(name: "estimatedPrintTimeSeconds", value: response.data.job.estimatedPrintTime )
 					} else {
 						sendEvent(name: "estimatedPrintTime", value: 0 )
+						sendEvent(name: "estimatedPrintTimeSeconds", value: 0 )
 					}
 				
 				if (state.isPrinting && response.data.job.file.name != null)
@@ -294,8 +305,11 @@ def PrinterNotResponding(){
 	state.isPrinting = false
 	sendEvent(name: "completion", value: 0 )
 	sendEvent(name: "printTimeLeft", value: 0 )
+	sendEvent(name: "printTimeLeftSeconds", value: 0 )
 	sendEvent(name: "printTime", value: 0 )
+	sendEvent(name: "printTimeSeconds", value: 0 )
 	sendEvent(name: "estimatedPrintTime", value: 0 )
+	sendEvent(name: "estimatedPrintTimeSeconds", value: 0 )
 	sendEvent(name: "name", value: "none" )
 	sendEvent(name: "user", value: "none" )
 	// reset temperature readings to 0 when disconnected
@@ -524,4 +538,15 @@ def SendCommand(String payload, String path) {
     catch (Exception e) {
         log.debug "runCmd hit exception ${e} on ${hubAction}"
     }
+}
+
+def secondsToReadableTime( secondsToConvert ) {
+    long millis = secondsToConvert * 1000;
+    long hours = TimeUnit.MILLISECONDS.toHours(millis);
+    long minutes = TimeUnit.MILLISECONDS.toMinutes(millis) % TimeUnit.HOURS.toMinutes(1);
+    long seconds = TimeUnit.MILLISECONDS.toSeconds(millis) % TimeUnit.MINUTES.toSeconds(1);
+
+    String format = String.format("%02dh:%02dm:%02ds", Math.abs(hours), Math.abs(minutes), Math.abs(seconds));
+	log.debug format
+	return format
 }
