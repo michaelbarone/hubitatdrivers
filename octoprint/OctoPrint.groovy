@@ -242,6 +242,7 @@ def GetPrinter() {
 					}
 				} else {
 					ResetTemperatures()
+					ResetDisplayLayerProgress()
 				}
 			}
 			else
@@ -317,31 +318,32 @@ def ResetTemperatures(){
 
 def ResetDisplayLayerProgress(){
 	// only reset if enabled AND if there is a previous value for DLP_fanSpeed
+	// default values returned from octoprint addon api
 	if(enableDisplayLayerProgress && device.currentValue("DLP_fanSpeed") != null){
-		sendEvent(name: "DLP_fanSpeed", value: 0 )
-		sendEvent(name: "DLP_feedrate", value: 0 )
-		sendEvent(name: "DLP_feedrateG0", value: 0 )
-		sendEvent(name: "DLP_feedrateG1", value: 0 )
-		sendEvent(name: "DLP_layer_averageLayerDuration", value: 0 )
-		sendEvent(name: "DLP_layer_averageLayerDurationInSeconds", value: 0 )
-		sendEvent(name: "DLP_layer_current", value: 0 )
-		sendEvent(name: "DLP_layer_lastLayerDuration", value: 0 )
-		sendEvent(name: "DLP_layer_lastLayerDurationInSeconds", value: 0 )
+		sendEvent(name: "DLP_fanSpeed", value: "-" )
+		sendEvent(name: "DLP_feedrate", value: "-" )
+		sendEvent(name: "DLP_feedrateG0", value: "-" )
+		sendEvent(name: "DLP_feedrateG1", value: "-" )
+		sendEvent(name: "DLP_layer_averageLayerDuration", value: "-" )
+		sendEvent(name: "DLP_layer_averageLayerDurationInSeconds", value: "-" )
+		sendEvent(name: "DLP_layer_current", value: "-" )
+		sendEvent(name: "DLP_layer_lastLayerDuration", value: "-" )
+		sendEvent(name: "DLP_layer_lastLayerDurationInSeconds", value: "-" )
 		sendEvent(name: "DLP_layer_total", value: 0 )
 		sendEvent(name: "DLP_print_changeFilamentCount", value: 0 )
 		sendEvent(name: "DLP_print_changeFilamentTimeLeft", value: "-" )
 		sendEvent(name: "DLP_print_changeFilamentTimeLeftInSeconds", value: 0 )
 		sendEvent(name: "DLP_print_estimatedChangedFilamentTime", value: "-" )
-		sendEvent(name: "DLP_print_estimatedEndTime", value: 0 )
-		sendEvent(name: "DLP_print_m73progress", value: null )
-		sendEvent(name: "DLP_print_printerState", value: null )
+		sendEvent(name: "DLP_print_estimatedEndTime", value: "-" )
+		sendEvent(name: "DLP_print_m73progress", value: "" )
+		sendEvent(name: "DLP_print_printerState", value: "offline" )
 		sendEvent(name: "DLP_print_progress", value: 0 )
-		sendEvent(name: "DLP_print_timeLeft", value: 0 )
-		sendEvent(name: "DLP_print_timeLeftInSeconds", value: 0 )
-		sendEvent(name: "DLP_height_current", value: 0 )
-		sendEvent(name: "DLP_height_currentFormatted", value: 0 )
-		sendEvent(name: "DLP_height_total", value: 0 )
-		sendEvent(name: "DLP_height_totalFormatted", value: 0 )
+		sendEvent(name: "DLP_print_timeLeft", value: "-" )
+		sendEvent(name: "DLP_print_timeLeftInSeconds", value: "-" )
+		sendEvent(name: "DLP_height_current", value: "-" )
+		sendEvent(name: "DLP_height_currentFormatted", value: "-" )
+		sendEvent(name: "DLP_height_total", value: "-" )
+		sendEvent(name: "DLP_height_totalFormatted", value: "-" )
 	}
 }
 
