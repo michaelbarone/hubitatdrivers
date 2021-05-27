@@ -210,7 +210,7 @@ def GetPrinter() {
 						sendEvent(name: "printTimeLeft", value: secondsToReadableTime(response.data.progress.printTimeLeft) )
 						sendEvent(name: "printTimeLeftSeconds", value: response.data.progress.printTimeLeft )
 					} else {
-						sendEvent(name: "printTimeLeft", value: 0 )
+						sendEvent(name: "printTimeLeft", value: "-" )
 						sendEvent(name: "printTimeLeftSeconds", value: 0 )
 					}
 				if (state.isPrinting && response.data.progress.printTime != null)
@@ -219,7 +219,7 @@ def GetPrinter() {
 						sendEvent(name: "printTime", value: secondsToReadableTime(response.data.progress.printTime) )
 						sendEvent(name: "printTimeSeconds", value: response.data.progress.printTime )
 					} else {
-						sendEvent(name: "printTime", value: 0 )
+						sendEvent(name: "printTime", value: "-" )
 						sendEvent(name: "printTimeSeconds", value: 0 )
 					}
 				
@@ -229,7 +229,7 @@ def GetPrinter() {
 						sendEvent(name: "estimatedPrintTime", value: secondsToReadableTime(response.data.job.estimatedPrintTime) )
 						sendEvent(name: "estimatedPrintTimeSeconds", value: response.data.job.estimatedPrintTime )
 					} else {
-						sendEvent(name: "estimatedPrintTime", value: 0 )
+						sendEvent(name: "estimatedPrintTime", value: "-" )
 						sendEvent(name: "estimatedPrintTimeSeconds", value: 0 )
 					}
 				
@@ -304,11 +304,11 @@ def PrinterNotResponding(){
 	state.state = "Disconnected"
 	state.isPrinting = false
 	sendEvent(name: "completion", value: 0 )
-	sendEvent(name: "printTimeLeft", value: 0 )
+	sendEvent(name: "printTimeLeft", value: "-" )
 	sendEvent(name: "printTimeLeftSeconds", value: 0 )
-	sendEvent(name: "printTime", value: 0 )
+	sendEvent(name: "printTime", value: "-" )
 	sendEvent(name: "printTimeSeconds", value: 0 )
-	sendEvent(name: "estimatedPrintTime", value: 0 )
+	sendEvent(name: "estimatedPrintTime", value: "-" )
 	sendEvent(name: "estimatedPrintTimeSeconds", value: 0 )
 	sendEvent(name: "name", value: "none" )
 	sendEvent(name: "user", value: "none" )
